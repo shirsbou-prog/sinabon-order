@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>הזמנת סינבון ליום שישי</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap');
 
 :root{
   --bg:#FFFBF6;
@@ -83,7 +83,7 @@ body{
   box-shadow:var(--shadow);
 }
 .hero h1{
-  font-family:'Frank Ruhl Libre',serif;
+  font-family:'Heebo',Arial,sans-serif;
   font-weight:700;
   font-size:clamp(21px,5.5vw,25px);
   margin:0 0 8px;
@@ -111,7 +111,7 @@ body{
 
 section.block{margin-bottom:22px;}
 .block-title{
-  font-family:'Frank Ruhl Libre',serif;
+  font-family:'Heebo',Arial,sans-serif;
   font-weight:700;
   font-size:18px;
   margin:0 0 12px;
@@ -259,7 +259,7 @@ section.block{margin-bottom:22px;}
 .summary-total{flex:1;}
 .summary-total .lbl{font-size:11.5px;color:var(--ink-soft);}
 .summary-total .val{
-  font-family:'Frank Ruhl Libre',serif;
+  font-family:'Heebo',Arial,sans-serif;
   font-weight:700;
   font-size:22px;
   font-variant-numeric:tabular-nums;
@@ -304,9 +304,8 @@ section.block{margin-bottom:22px;}
   max-width:480px;
   margin:0 auto;
 }
-.success-screen .icon{font-size:52px;margin-bottom:14px;}
 .success-screen h2{
-  font-family:'Frank Ruhl Libre',serif;
+  font-family:'Heebo',Arial,sans-serif;
   font-size:24px;
   margin:0 0 10px;
 }
@@ -360,9 +359,9 @@ section.block{margin-bottom:22px;}
   <div id="formView">
 
     <div class="hero">
-      <span class="badge">🎁 הזמנה מראש</span>
+      <span class="badge">הזמנה מראש</span>
       <h1>הזמנת סינבון / עוגת שמרים לכיפור / לשבת</h1>
-      <p>בוחרים תאריך, ממלאים כמות, ואנחנו שולחים קישור לתשלום. פשוט, נכון? 🌸</p>
+      <p>בוחרים תאריך, ממלאים כמות, ואנחנו שולחים קישור לתשלום. פשוט, נכון?</p>
     </div>
 
     <section class="block">
@@ -476,7 +475,6 @@ section.block{margin-bottom:22px;}
   </div>
 
   <div class="success-screen" id="successView" hidden>
-    <div class="icon">🌸</div>
     <h2>ההזמנה התקבלה!</h2>
     <p>תודה שהזמנת מ-Shir's Boutique. נחזור אלייך בהקדם עם קישור לתשלום.</p>
     <div class="success-card" id="orderSummaryCard"></div>
@@ -632,7 +630,7 @@ section.block{margin-bottom:22px;}
     window.scrollTo(0,0);
 
     var waLines = [
-      '🌸 הזמנה חדשה מהטופס',
+      'הזמנה חדשה מהטופס',
       DATE_LABELS[state.orderDate],
       '',
       'שם: ' + fullName,
