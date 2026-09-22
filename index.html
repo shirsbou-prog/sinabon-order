@@ -433,6 +433,20 @@ section.block{margin-bottom:22px;}
           <button type="button" data-action="inc" data-product="crumble" aria-label="הוספת כמות קראמבל קוקיז">+</button>
         </div>
       </div>
+
+      <div class="product">
+        <img class="pimg" src="prod_cornflakes.png" alt="קראמבל קוקיז קראנץ קורנפלקס">
+        <div class="product-info">
+          <p class="pname">קראמבל קוקיז קראנץ' קורנפלקס</p>
+          <p class="pdesc">בצק עוגיות קראמבל על בסיס חמאה. שבבי שוקולד לבן וליבת שוקולד לבן רך. טופינג קראנץ קורנפלקס.</p>
+          <p class="pprice">34 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="cornflakes" aria-label="הפחתת כמות קראמבל קורנפלקס">−</button>
+          <span class="qty" id="qtyCornflakes">0</span>
+          <button type="button" data-action="inc" data-product="cornflakes" aria-label="הוספת כמות קראמבל קורנפלקס">+</button>
+        </div>
+      </div>
     </section>
 
     <section class="block">
@@ -506,9 +520,9 @@ section.block{margin-bottom:22px;}
 <script>
 (function(){
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzd3oU3RBYeDIyzjAxTQBFQSgEGi9mq51pSVzOVYLV2cY2vzbplWxnUO0TtkCkg5fDg/exec";
-  var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, DELIVERY_FEE = 20;
+  var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, PRICE_CORNFLAKES = 34, DELIVERY_FEE = 20;
 
-  var state = { sinabon: 0, babka: 0, crumble: 0, method: 'pickup', orderDate: null };
+  var state = { sinabon: 0, babka: 0, crumble: 0, cornflakes: 0, method: 'pickup', orderDate: null };
 
   function getNearestFriday(){
     var d = new Date();
@@ -528,6 +542,7 @@ section.block{margin-bottom:22px;}
   var qtySinabonEl = document.getElementById('qtySinabon');
   var qtyBabkaEl = document.getElementById('qtyBabka');
   var qtyCrumbleEl = document.getElementById('qtyCrumble');
+  var qtyCornflakesEl = document.getElementById('qtyCornflakes');
   var totalDisplay = document.getElementById('totalDisplay');
   var addressField = document.getElementById('addressField');
   var addressInput = document.getElementById('address');
@@ -543,7 +558,7 @@ section.block{margin-bottom:22px;}
   document.getElementById('nearestFridayDesc').textContent = 'לשבת · ' + NEAREST_FRIDAY;
 
   function calcTotal(){
-    var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE;
+    var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES;
     if(state.method === 'delivery') t += DELIVERY_FEE;
     return t;
   }
@@ -552,6 +567,7 @@ section.block{margin-bottom:22px;}
     qtySinabonEl.textContent = state.sinabon;
     qtyBabkaEl.textContent = state.babka;
     qtyCrumbleEl.textContent = state.crumble;
+    qtyCornflakesEl.textContent = state.cornflakes;
     totalDisplay.textContent = calcTotal() + ' ש"ח';
     var isDelivery = state.method === 'delivery';
     addressField.classList.toggle('hidden', !isDelivery);
@@ -586,7 +602,7 @@ section.block{margin-bottom:22px;}
     var phone = document.getElementById('phone').value.trim();
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
-    if(state.sinabon + state.babka + state.crumble === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
+    if(state.sinabon + state.babka + state.crumble + state.cornflakes === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
     if(state.method === 'delivery' && !addressInput.value.trim()) return { msg: 'כתובת למשלוח היא שדה חובה', field: addressInput };
@@ -625,6 +641,7 @@ section.block{margin-bottom:22px;}
       qtySinabon: String(state.sinabon),
       qtyBabka: String(state.babka),
       qtyCrumble: String(state.crumble),
+      qtyCornflakes: String(state.cornflakes),
       note: note,
       total: String(total)
     });
@@ -643,6 +660,7 @@ section.block{margin-bottom:22px;}
     if(state.sinabon) lines.push(state.sinabon + ' × סינבון חלומות');
     if(state.babka) lines.push(state.babka + ' × שמרים שוקולד עסיסית');
     if(state.crumble) lines.push(state.crumble + ' × קראמבל קוקיז לוז');
+    if(state.cornflakes) lines.push(state.cornflakes + ' × קראמבל קוקיז קראנץ\' קורנפלקס');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית' : 'איסוף עצמי מהקונדיטוריה (מזור)';
     document.getElementById('orderSummaryCard').innerHTML =
       '<div><b>' + getOrderDateLabel() + '</b></div>' +
