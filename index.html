@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>הזמנת סינבון ליום שישי</title>
+<title>הזמנות ספיישלים של שישי</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap');
 
@@ -360,27 +360,32 @@ section.block{margin-bottom:22px;}
 
     <div class="hero">
       <span class="badge">הזמנה מראש</span>
-      <h1>הזמנת סינבון / עוגת שמרים לכיפור / לשבת</h1>
+      <h1>הזמנות ספיישלים של שישי</h1>
       <p>בוחרים תאריך, ממלאים כמות, ואנחנו שולחים קישור לתשלום. פשוט, נכון?</p>
     </div>
 
     <section class="block">
       <h2 class="block-title"><span class="num">1</span>למתי ההזמנה</h2>
       <div class="method-options" id="dateOptions">
-        <label class="method" id="dateFridayLabel">
-          <input type="radio" name="orderDate" value="friday" id="dateFriday">
+        <label class="method" id="dateNearestLabel">
+          <input type="radio" name="orderDate" value="nearest" id="dateNearest">
           <div>
-            <div class="mtitle">יום שישי, 18.9</div>
-            <div class="mdesc">לשבת</div>
+            <div class="mtitle">יום שישי הקרוב</div>
+            <div class="mdesc" id="nearestFridayDesc">לשבת</div>
           </div>
         </label>
-        <label class="method" id="dateSundayLabel">
-          <input type="radio" name="orderDate" value="sunday" id="dateSunday">
+        <label class="method" id="dateOtherLabel">
+          <input type="radio" name="orderDate" value="other" id="dateOther">
           <div>
-            <div class="mtitle">יום ראשון, 20.9</div>
-            <div class="mdesc">לכיפור</div>
+            <div class="mtitle">יום שישי אחר</div>
+            <div class="mdesc">לבחור תאריך אחר</div>
           </div>
         </label>
+      </div>
+      <div class="field hidden" id="otherDateField">
+        <label for="otherDateInput">לאיזה יום שישי? <span class="required-mark">*</span></label>
+        <input type="text" id="otherDateInput" placeholder="לדוגמה: 25.9">
+        <p class="hint">שימו לב: הזמנות פתוחות רק לימי שישי בלבד, כרגע לא ניתן להזמין ליום אחר במהלך השבוע.</p>
       </div>
     </section>
 
@@ -505,7 +510,21 @@ section.block{margin-bottom:22px;}
   var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, DELIVERY_FEE = 20;
 
   var state = { sinabon: 0, babka: 0, crumble: 0, method: 'pickup', orderDate: null };
-  var DATE_LABELS = { friday: 'יום שישי, 18.9 (לשבת)', sunday: 'יום ראשון, 20.9 (לכיפור)' };
+
+  function getNearestFriday(){
+    var d = new Date();
+    var day = d.getDay(); // 0=Sun ... 5=Fri, 6=Sat
+    var diff = (5 - day + 7) % 7;
+    var friday = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+    return friday.getDate() + '.' + (friday.getMonth() + 1);
+  }
+  var NEAREST_FRIDAY = getNearestFriday();
+
+  function getOrderDateLabel(){
+    if(state.orderDate === 'nearest') return 'יום שישי, ' + NEAREST_FRIDAY + ' (לשבת)';
+    if(state.orderDate === 'other') return 'יום שישי, ' + otherDateInput.value.trim();
+    return '';
+  }
 
   var qtySinabonEl = document.getElementById('qtySinabon');
   var qtyBabkaEl = document.getElementById('qtyBabka');
@@ -515,10 +534,14 @@ section.block{margin-bottom:22px;}
   var addressInput = document.getElementById('address');
   var methodPickupLabel = document.getElementById('methodPickupLabel');
   var methodDeliveryLabel = document.getElementById('methodDeliveryLabel');
-  var dateFridayLabel = document.getElementById('dateFridayLabel');
-  var dateSundayLabel = document.getElementById('dateSundayLabel');
+  var dateNearestLabel = document.getElementById('dateNearestLabel');
+  var dateOtherLabel = document.getElementById('dateOtherLabel');
+  var otherDateField = document.getElementById('otherDateField');
+  var otherDateInput = document.getElementById('otherDateInput');
   var errorMsg = document.getElementById('errorMsg');
   var submitBtn = document.getElementById('submitBtn');
+
+  document.getElementById('nearestFridayDesc').textContent = 'לשבת · ' + NEAREST_FRIDAY;
 
   function calcTotal(){
     var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE;
@@ -535,8 +558,9 @@ section.block{margin-bottom:22px;}
     addressField.classList.toggle('hidden', !isDelivery);
     methodPickupLabel.classList.toggle('active', !isDelivery);
     methodDeliveryLabel.classList.toggle('active', isDelivery);
-    dateFridayLabel.classList.toggle('active', state.orderDate === 'friday');
-    dateSundayLabel.classList.toggle('active', state.orderDate === 'sunday');
+    dateNearestLabel.classList.toggle('active', state.orderDate === 'nearest');
+    dateOtherLabel.classList.toggle('active', state.orderDate === 'other');
+    otherDateField.classList.toggle('hidden', state.orderDate !== 'other');
   }
 
   document.querySelectorAll('.stepper button').forEach(function(btn){
@@ -552,15 +576,17 @@ section.block{margin-bottom:22px;}
 
   document.getElementById('methodPickup').addEventListener('change', function(){ state.method = 'pickup'; render(); });
   document.getElementById('methodDelivery').addEventListener('change', function(){ state.method = 'delivery'; render(); });
-  document.getElementById('dateFriday').addEventListener('change', function(){ state.orderDate = 'friday'; errorMsg.textContent=''; render(); });
-  document.getElementById('dateSunday').addEventListener('change', function(){ state.orderDate = 'sunday'; errorMsg.textContent=''; render(); });
+  document.getElementById('dateNearest').addEventListener('change', function(){ state.orderDate = 'nearest'; errorMsg.textContent=''; render(); });
+  document.getElementById('dateOther').addEventListener('change', function(){ state.orderDate = 'other'; errorMsg.textContent=''; render(); });
 
   addressInput.addEventListener('input', function(){ addressInput.classList.remove('invalid'); });
+  otherDateInput.addEventListener('input', function(){ otherDateInput.classList.remove('invalid'); });
 
   function validate(){
     var fullName = document.getElementById('fullName').value.trim();
     var phone = document.getElementById('phone').value.trim();
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
+    if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
     if(state.sinabon + state.babka + state.crumble === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
@@ -592,7 +618,7 @@ section.block{margin-bottom:22px;}
     var total = calcTotal();
 
     var body = new URLSearchParams({
-      orderDate: DATE_LABELS[state.orderDate],
+      orderDate: getOrderDateLabel(),
       fullName: fullName,
       phone: phone,
       method: methodText,
@@ -620,7 +646,7 @@ section.block{margin-bottom:22px;}
     if(state.crumble) lines.push(state.crumble + ' × קראמבל קוקיז לוז');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית' : 'איסוף עצמי מהקונדיטוריה (מזור)';
     document.getElementById('orderSummaryCard').innerHTML =
-      '<div><b>' + DATE_LABELS[state.orderDate] + '</b></div>' +
+      '<div><b>' + getOrderDateLabel() + '</b></div>' +
       '<div style="margin-top:8px">' + lines.join('<br>') + '</div>' +
       '<div style="margin-top:8px">' + methodLine + '</div>' +
       '<div style="margin-top:8px">סה"כ: <b>' + total + ' ש"ח</b></div>';
@@ -631,7 +657,7 @@ section.block{margin-bottom:22px;}
 
     var waLines = [
       'הזמנה חדשה מהטופס',
-      DATE_LABELS[state.orderDate],
+      getOrderDateLabel(),
       '',
       'שם: ' + fullName,
       'טלפון: ' + phone,
