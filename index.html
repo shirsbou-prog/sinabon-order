@@ -512,6 +512,18 @@ section.block{margin-bottom:22px;}
           <button type="button" data-action="inc" data-product="lemonTart" aria-label="הוספת כמות טארט לימון">+</button>
         </div>
       </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">מגש פירות</p>
+          <p class="pprice">229 ש"ח</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="fruitTray" aria-label="הפחתת כמות מגש פירות">−</button>
+          <span class="qty" id="qtyFruitTray">0</span>
+          <button type="button" data-action="inc" data-product="fruitTray" aria-label="הוספת כמות מגש פירות">+</button>
+        </div>
+      </div>
     </section>
 
     <section class="block">
@@ -529,6 +541,13 @@ section.block{margin-bottom:22px;}
           <div>
             <div class="mtitle">משלוח עד הבית</div>
             <div class="mdesc mprice">תוספת 20 ש"ח למשלוח</div>
+          </div>
+        </label>
+        <label class="method" id="methodShiloLabel">
+          <input type="radio" name="method" value="shilo" id="methodShilo">
+          <div>
+            <div class="mtitle">נקודת חלוקה - שילה</div>
+            <div class="mdesc">ב-2.10</div>
           </div>
         </label>
       </div>
@@ -586,11 +605,11 @@ section.block{margin-bottom:22px;}
 (function(){
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzd3oU3RBYeDIyzjAxTQBFQSgEGi9mq51pSVzOVYLV2cY2vzbplWxnUO0TtkCkg5fDg/exec";
   var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, PRICE_CORNFLAKES = 34,
-      PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, DELIVERY_FEE = 20;
+      PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, PRICE_FRUIT_TRAY = 229, DELIVERY_FEE = 20;
 
   var state = {
     sinabon: 0, babka: 0, crumble: 0, cornflakes: 0,
-    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, lemonTart: 0,
+    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, lemonTart: 0, fruitTray: 0,
     method: 'pickup', orderDate: null
   };
 
@@ -618,11 +637,13 @@ section.block{margin-bottom:22px;}
   var qtyCrystalBuonoEl = document.getElementById('qtyCrystalBuono');
   var qtyCrystalLotusEl = document.getElementById('qtyCrystalLotus');
   var qtyLemonTartEl = document.getElementById('qtyLemonTart');
+  var qtyFruitTrayEl = document.getElementById('qtyFruitTray');
   var totalDisplay = document.getElementById('totalDisplay');
   var addressField = document.getElementById('addressField');
   var addressInput = document.getElementById('address');
   var methodPickupLabel = document.getElementById('methodPickupLabel');
   var methodDeliveryLabel = document.getElementById('methodDeliveryLabel');
+  var methodShiloLabel = document.getElementById('methodShiloLabel');
   var dateNearestLabel = document.getElementById('dateNearestLabel');
   var dateOtherLabel = document.getElementById('dateOtherLabel');
   var otherDateField = document.getElementById('otherDateField');
@@ -636,7 +657,8 @@ section.block{margin-bottom:22px;}
     var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES +
       state.crumbleLotus * PRICE_CRUMBLE_LOTUS +
       (state.crystalMango + state.crystalBuono + state.crystalLotus) * PRICE_CRYSTAL +
-      state.lemonTart * PRICE_LEMON_TART;
+      state.lemonTart * PRICE_LEMON_TART +
+      state.fruitTray * PRICE_FRUIT_TRAY;
     if(state.method === 'delivery') t += DELIVERY_FEE;
     return t;
   }
@@ -651,11 +673,13 @@ section.block{margin-bottom:22px;}
     qtyCrystalBuonoEl.textContent = state.crystalBuono;
     qtyCrystalLotusEl.textContent = state.crystalLotus;
     qtyLemonTartEl.textContent = state.lemonTart;
+    qtyFruitTrayEl.textContent = state.fruitTray;
     totalDisplay.textContent = calcTotal() + ' ש"ח';
     var isDelivery = state.method === 'delivery';
     addressField.classList.toggle('hidden', !isDelivery);
-    methodPickupLabel.classList.toggle('active', !isDelivery);
+    methodPickupLabel.classList.toggle('active', state.method === 'pickup');
     methodDeliveryLabel.classList.toggle('active', isDelivery);
+    methodShiloLabel.classList.toggle('active', state.method === 'shilo');
     dateNearestLabel.classList.toggle('active', state.orderDate === 'nearest');
     dateOtherLabel.classList.toggle('active', state.orderDate === 'other');
     otherDateField.classList.toggle('hidden', state.orderDate !== 'other');
@@ -674,6 +698,7 @@ section.block{margin-bottom:22px;}
 
   document.getElementById('methodPickup').addEventListener('change', function(){ state.method = 'pickup'; render(); });
   document.getElementById('methodDelivery').addEventListener('change', function(){ state.method = 'delivery'; render(); });
+  document.getElementById('methodShilo').addEventListener('change', function(){ state.method = 'shilo'; render(); });
   document.getElementById('dateNearest').addEventListener('change', function(){ state.orderDate = 'nearest'; errorMsg.textContent=''; render(); });
   document.getElementById('dateOther').addEventListener('change', function(){ state.orderDate = 'other'; errorMsg.textContent=''; render(); });
 
@@ -686,7 +711,7 @@ section.block{margin-bottom:22px;}
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
     var totalItems = state.sinabon + state.babka + state.crumble + state.cornflakes +
-      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.lemonTart;
+      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.lemonTart + state.fruitTray;
     if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
@@ -714,6 +739,8 @@ section.block{margin-bottom:22px;}
     var note = document.getElementById('note').value.trim();
     var methodText = state.method === 'delivery'
       ? 'משלוח עד הבית (+20 ש"ח)'
+      : state.method === 'shilo'
+      ? 'נקודת חלוקה - שילה, ב-2.10'
       : 'איסוף עצמי - סמטת הבוקרים 5, מזור, 9:30-12:00';
     var total = calcTotal();
 
@@ -732,6 +759,7 @@ section.block{margin-bottom:22px;}
       qtyCrystalBuono: String(state.crystalBuono),
       qtyCrystalLotus: String(state.crystalLotus),
       qtyLemonTart: String(state.lemonTart),
+      qtyFruitTray: String(state.fruitTray),
       note: note,
       total: String(total)
     });
@@ -756,7 +784,10 @@ section.block{margin-bottom:22px;}
     if(state.crystalBuono) lines.push(state.crystalBuono + ' × קריסטלית בואנו');
     if(state.crystalLotus) lines.push(state.crystalLotus + ' × קריסטלית קראנץ\' לוטוס');
     if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
-    var methodLine = state.method === 'delivery' ? 'משלוח עד הבית' : 'איסוף עצמי מהקונדיטוריה (מזור)';
+    if(state.fruitTray) lines.push(state.fruitTray + ' × מגש פירות');
+    var methodLine = state.method === 'delivery' ? 'משלוח עד הבית'
+      : state.method === 'shilo' ? 'נקודת חלוקה - שילה, ב-2.10'
+      : 'איסוף עצמי מהקונדיטוריה (מזור)';
     document.getElementById('orderSummaryCard').innerHTML =
       '<div><b>' + getOrderDateLabel() + '</b></div>' +
       '<div style="margin-top:8px">' + lines.join('<br>') + '</div>' +
