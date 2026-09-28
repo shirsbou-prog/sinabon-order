@@ -447,6 +447,71 @@ section.block{margin-bottom:22px;}
           <button type="button" data-action="inc" data-product="cornflakes" aria-label="הוספת כמות קראמבל קורנפלקס">+</button>
         </div>
       </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">קראמבל קוקיז לוטוס</p>
+          <p class="pdesc">בצק עוגיות קראמבל על בסיס חמאה. שבבי שוקולד לבן וליבת שוקולד לבן רך. טופינג קראנץ לוטוס, פירורי עוגיות לוטוס.</p>
+          <p class="pprice">34 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crumbleLotus" aria-label="הפחתת כמות קראמבל לוטוס">−</button>
+          <span class="qty" id="qtyCrumbleLotus">0</span>
+          <button type="button" data-action="inc" data-product="crumbleLotus" aria-label="הוספת כמות קראמבל לוטוס">+</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">קריסטלית מוס שמנת - מנגו</p>
+          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג מנגו טרופי.</p>
+          <p class="pprice">39 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crystalMango" aria-label="הפחתת כמות קריסטלית מנגו">−</button>
+          <span class="qty" id="qtyCrystalMango">0</span>
+          <button type="button" data-action="inc" data-product="crystalMango" aria-label="הוספת כמות קריסטלית מנגו">+</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">קריסטלית מוס שמנת - בואנו (מהדרין)</p>
+          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג בואנו ואגוזי לוז.</p>
+          <p class="pprice">39 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crystalBuono" aria-label="הפחתת כמות קריסטלית בואנו">−</button>
+          <span class="qty" id="qtyCrystalBuono">0</span>
+          <button type="button" data-action="inc" data-product="crystalBuono" aria-label="הוספת כמות קריסטלית בואנו">+</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">קריסטלית מוס שמנת - קראנץ' לוטוס</p>
+          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג קראנץ' לוטוס.</p>
+          <p class="pprice">39 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crystalLotus" aria-label="הפחתת כמות קריסטלית קראנץ לוטוס">−</button>
+          <span class="qty" id="qtyCrystalLotus">0</span>
+          <button type="button" data-action="inc" data-product="crystalLotus" aria-label="הוספת כמות קריסטלית קראנץ לוטוס">+</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-info">
+          <p class="pname">טארט לימון - ה-TOP שלנו!</p>
+          <p class="pdesc">קוטר 11, אישי/זוגי.</p>
+          <p class="pprice">38 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="lemonTart" aria-label="הפחתת כמות טארט לימון">−</button>
+          <span class="qty" id="qtyLemonTart">0</span>
+          <button type="button" data-action="inc" data-product="lemonTart" aria-label="הוספת כמות טארט לימון">+</button>
+        </div>
+      </div>
     </section>
 
     <section class="block">
@@ -520,9 +585,14 @@ section.block{margin-bottom:22px;}
 <script>
 (function(){
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzd3oU3RBYeDIyzjAxTQBFQSgEGi9mq51pSVzOVYLV2cY2vzbplWxnUO0TtkCkg5fDg/exec";
-  var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, PRICE_CORNFLAKES = 34, DELIVERY_FEE = 20;
+  var PRICE_SINABON = 55, PRICE_BABKA = 49, PRICE_CRUMBLE = 34, PRICE_CORNFLAKES = 34,
+      PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, DELIVERY_FEE = 20;
 
-  var state = { sinabon: 0, babka: 0, crumble: 0, cornflakes: 0, method: 'pickup', orderDate: null };
+  var state = {
+    sinabon: 0, babka: 0, crumble: 0, cornflakes: 0,
+    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, lemonTart: 0,
+    method: 'pickup', orderDate: null
+  };
 
   function getNearestFriday(){
     var d = new Date();
@@ -543,6 +613,11 @@ section.block{margin-bottom:22px;}
   var qtyBabkaEl = document.getElementById('qtyBabka');
   var qtyCrumbleEl = document.getElementById('qtyCrumble');
   var qtyCornflakesEl = document.getElementById('qtyCornflakes');
+  var qtyCrumbleLotusEl = document.getElementById('qtyCrumbleLotus');
+  var qtyCrystalMangoEl = document.getElementById('qtyCrystalMango');
+  var qtyCrystalBuonoEl = document.getElementById('qtyCrystalBuono');
+  var qtyCrystalLotusEl = document.getElementById('qtyCrystalLotus');
+  var qtyLemonTartEl = document.getElementById('qtyLemonTart');
   var totalDisplay = document.getElementById('totalDisplay');
   var addressField = document.getElementById('addressField');
   var addressInput = document.getElementById('address');
@@ -558,7 +633,10 @@ section.block{margin-bottom:22px;}
   document.getElementById('nearestFridayDesc').textContent = 'לשבת · ' + NEAREST_FRIDAY;
 
   function calcTotal(){
-    var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES;
+    var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES +
+      state.crumbleLotus * PRICE_CRUMBLE_LOTUS +
+      (state.crystalMango + state.crystalBuono + state.crystalLotus) * PRICE_CRYSTAL +
+      state.lemonTart * PRICE_LEMON_TART;
     if(state.method === 'delivery') t += DELIVERY_FEE;
     return t;
   }
@@ -568,6 +646,11 @@ section.block{margin-bottom:22px;}
     qtyBabkaEl.textContent = state.babka;
     qtyCrumbleEl.textContent = state.crumble;
     qtyCornflakesEl.textContent = state.cornflakes;
+    qtyCrumbleLotusEl.textContent = state.crumbleLotus;
+    qtyCrystalMangoEl.textContent = state.crystalMango;
+    qtyCrystalBuonoEl.textContent = state.crystalBuono;
+    qtyCrystalLotusEl.textContent = state.crystalLotus;
+    qtyLemonTartEl.textContent = state.lemonTart;
     totalDisplay.textContent = calcTotal() + ' ש"ח';
     var isDelivery = state.method === 'delivery';
     addressField.classList.toggle('hidden', !isDelivery);
@@ -602,7 +685,9 @@ section.block{margin-bottom:22px;}
     var phone = document.getElementById('phone').value.trim();
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
-    if(state.sinabon + state.babka + state.crumble + state.cornflakes === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
+    var totalItems = state.sinabon + state.babka + state.crumble + state.cornflakes +
+      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.lemonTart;
+    if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
     if(state.method === 'delivery' && !addressInput.value.trim()) return { msg: 'כתובת למשלוח היא שדה חובה', field: addressInput };
@@ -642,6 +727,11 @@ section.block{margin-bottom:22px;}
       qtyBabka: String(state.babka),
       qtyCrumble: String(state.crumble),
       qtyCornflakes: String(state.cornflakes),
+      qtyCrumbleLotus: String(state.crumbleLotus),
+      qtyCrystalMango: String(state.crystalMango),
+      qtyCrystalBuono: String(state.crystalBuono),
+      qtyCrystalLotus: String(state.crystalLotus),
+      qtyLemonTart: String(state.lemonTart),
       note: note,
       total: String(total)
     });
@@ -661,6 +751,11 @@ section.block{margin-bottom:22px;}
     if(state.babka) lines.push(state.babka + ' × שמרים שוקולד עסיסית');
     if(state.crumble) lines.push(state.crumble + ' × קראמבל קוקיז לוז');
     if(state.cornflakes) lines.push(state.cornflakes + ' × קראמבל קוקיז קראנץ\' קורנפלקס');
+    if(state.crumbleLotus) lines.push(state.crumbleLotus + ' × קראמבל קוקיז לוטוס');
+    if(state.crystalMango) lines.push(state.crystalMango + ' × קריסטלית מנגו');
+    if(state.crystalBuono) lines.push(state.crystalBuono + ' × קריסטלית בואנו');
+    if(state.crystalLotus) lines.push(state.crystalLotus + ' × קריסטלית קראנץ\' לוטוס');
+    if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית' : 'איסוף עצמי מהקונדיטוריה (מזור)';
     document.getElementById('orderSummaryCard').innerHTML =
       '<div><b>' + getOrderDateLabel() + '</b></div>' +
