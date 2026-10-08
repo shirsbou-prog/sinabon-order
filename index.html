@@ -9,6 +9,7 @@
 
 :root{
   --bg:#FFFBF6;
+  --bg-tint: rgba(255,251,246,.55);
   --surface:#FFFFFF;
   --brand-pink:#FFD6E0;
   --brand-pink-deep:#F6AFC3;
@@ -25,6 +26,7 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#1B1613;
+    --bg-tint: rgba(27,22,19,.55);
     --surface:#241D19;
     --brand-pink:#4A2A34;
     --brand-pink-deep:#E38BA6;
@@ -41,6 +43,7 @@
 }
 :root[data-theme="dark"]{
   --bg:#1B1613;
+  --bg-tint: rgba(27,22,19,.55);
   --surface:#241D19;
   --brand-pink:#4A2A34;
   --brand-pink-deep:#E38BA6;
@@ -57,7 +60,7 @@
 
 *{box-sizing:border-box;}
 body{
-  background:var(--bg) url('bg.png') center top / cover no-repeat;
+  background:linear-gradient(var(--bg-tint),var(--bg-tint)), var(--bg) url('bg.png') top center / 100% auto no-repeat;
   color:var(--ink);
   direction:rtl;
   font-family:'Heebo',Arial,sans-serif;
