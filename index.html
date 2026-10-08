@@ -557,13 +557,6 @@ section.block{margin-bottom:22px;}
             <div class="mdesc mprice">תוספת 20 ש"ח למשלוח</div>
           </div>
         </label>
-        <label class="method" id="methodShiloLabel">
-          <input type="radio" name="method" value="shilo" id="methodShilo">
-          <div>
-            <div class="mtitle">נקודת חלוקה - שילה</div>
-            <div class="mdesc">ב-2.10</div>
-          </div>
-        </label>
       </div>
       <div class="field hidden" id="addressField">
         <label for="address">כתובת למשלוח <span class="required-mark">*</span></label>
@@ -657,7 +650,6 @@ section.block{margin-bottom:22px;}
   var addressInput = document.getElementById('address');
   var methodPickupLabel = document.getElementById('methodPickupLabel');
   var methodDeliveryLabel = document.getElementById('methodDeliveryLabel');
-  var methodShiloLabel = document.getElementById('methodShiloLabel');
   var dateNearestLabel = document.getElementById('dateNearestLabel');
   var dateOtherLabel = document.getElementById('dateOtherLabel');
   var otherDateField = document.getElementById('otherDateField');
@@ -693,7 +685,6 @@ section.block{margin-bottom:22px;}
     addressField.classList.toggle('hidden', !isDelivery);
     methodPickupLabel.classList.toggle('active', state.method === 'pickup');
     methodDeliveryLabel.classList.toggle('active', isDelivery);
-    methodShiloLabel.classList.toggle('active', state.method === 'shilo');
     dateNearestLabel.classList.toggle('active', state.orderDate === 'nearest');
     dateOtherLabel.classList.toggle('active', state.orderDate === 'other');
     otherDateField.classList.toggle('hidden', state.orderDate !== 'other');
@@ -712,7 +703,6 @@ section.block{margin-bottom:22px;}
 
   document.getElementById('methodPickup').addEventListener('change', function(){ state.method = 'pickup'; render(); });
   document.getElementById('methodDelivery').addEventListener('change', function(){ state.method = 'delivery'; render(); });
-  document.getElementById('methodShilo').addEventListener('change', function(){ state.method = 'shilo'; render(); });
   document.getElementById('dateNearest').addEventListener('change', function(){ state.orderDate = 'nearest'; errorMsg.textContent=''; render(); });
   document.getElementById('dateOther').addEventListener('change', function(){ state.orderDate = 'other'; errorMsg.textContent=''; render(); });
 
@@ -753,8 +743,6 @@ section.block{margin-bottom:22px;}
     var note = document.getElementById('note').value.trim();
     var methodText = state.method === 'delivery'
       ? 'משלוח עד הבית (+20 ש"ח)'
-      : state.method === 'shilo'
-      ? 'נקודת חלוקה - שילה, ב-2.10'
       : 'איסוף עצמי - סמטת הבוקרים 5, מזור, 9:30-12:00';
     var total = calcTotal();
 
@@ -800,7 +788,6 @@ section.block{margin-bottom:22px;}
     if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
     if(state.fruitTray) lines.push(state.fruitTray + ' × מגש פירות');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית'
-      : state.method === 'shilo' ? 'נקודת חלוקה - שילה, ב-2.10'
       : 'איסוף עצמי מהקונדיטוריה (מזור)';
     document.getElementById('orderSummaryCard').innerHTML =
       '<div><b>' + getOrderDateLabel() + '</b></div>' +
