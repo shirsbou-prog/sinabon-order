@@ -216,6 +216,8 @@ section.block{margin-bottom:22px;}
   transition:border-color .15s ease;
 }
 .method.active{border-color:var(--brand-pink-deep);}
+.method.disabled{opacity:.55;cursor:not-allowed;}
+.method.disabled .mdesc{color:var(--gold);font-weight:600;}
 .method input{margin-top:3px;accent-color:var(--gold);flex:none;}
 .method .mtitle{font-weight:700;font-size:15px;}
 .method .mdesc{color:var(--ink-soft);font-size:13px;margin-top:2px;line-height:1.5;}
@@ -630,6 +632,19 @@ section.block{margin-bottom:22px;}
   }
   var NEAREST_FRIDAY = getNearestFriday();
 
+  function getNearestFridayDate(){
+    var d = new Date();
+    var day = d.getDay();
+    var diff = (5 - day + 7) % 7;
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+  }
+  var ORDER_DEADLINE = (function(){
+    var f = getNearestFridayDate();
+    var dl = new Date(f.getFullYear(), f.getMonth(), f.getDate() - 1, 16, 0, 0);
+    return dl;
+  })();
+  var NEAREST_FRIDAY_CLOSED = new Date() > ORDER_DEADLINE;
+
   function getOrderDateLabel(){
     if(state.orderDate === 'nearest') return 'יום שישי, ' + NEAREST_FRIDAY + ' (לשבת)';
     if(state.orderDate === 'other') return 'יום שישי, ' + otherDateInput.value.trim();
@@ -658,7 +673,16 @@ section.block{margin-bottom:22px;}
   var errorMsg = document.getElementById('errorMsg');
   var submitBtn = document.getElementById('submitBtn');
 
-  document.getElementById('nearestFridayDesc').textContent = 'לשבת · ' + NEAREST_FRIDAY;
+  if(NEAREST_FRIDAY_CLOSED){
+    var dateNearestInput = document.getElementById('dateNearest');
+    dateNearestInput.disabled = true;
+    dateNearestLabel.classList.add('disabled');
+    document.getElementById('nearestFridayDesc').innerHTML =
+      'ההזמנות לתאריך זה נסגרו (עד 16:00 ביום חמישי) · זמינות לפי מלאי קיים בלבד, ' +
+      '<a href="https://wa.me/972534247937" style="color:inherit;text-decoration:underline">לבירור זמינות בוואטסאפ</a>';
+  } else {
+    document.getElementById('nearestFridayDesc').textContent = 'לשבת · ' + NEAREST_FRIDAY;
+  }
 
   function calcTotal(){
     var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES +
