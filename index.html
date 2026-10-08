@@ -516,6 +516,20 @@ section.block{margin-bottom:22px;}
         </div>
       </div>
 
+      <div class="product">
+        <img class="pimg" src="prod_crystal_tiramisu.png" alt="טירמיסו">
+        <div class="product-info">
+          <p class="pname">טירמיסו</p>
+          <p class="pdesc">טירמיסו איטלקי אמיתי. 2 שכבות של בישקוטי תבולים בסירופ קפה וקרם מסקרפונה על בסיס קרם זביון, קקאו.</p>
+          <p class="pprice">39 ש"ח ליחידה</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crystalTiramisu" aria-label="הפחתת כמות טירמיסו">−</button>
+          <span class="qty" id="qtyCrystalTiramisu">0</span>
+          <button type="button" data-action="inc" data-product="crystalTiramisu" aria-label="הוספת כמות טירמיסו">+</button>
+        </div>
+      </div>
+
       <!-- טארט לימון הוסתר ב-2026-10-08 לפי בקשת שיר. להחזרה: למחוק את ה-display:none ואת ההערה הזו -->
       <div class="product" style="display:none">
         <img class="pimg" src="prod_lemon_tart.png" alt="טארט לימון אישי">
@@ -622,7 +636,7 @@ section.block{margin-bottom:22px;}
 
   var state = {
     sinabon: 0, babka: 0, crumble: 0, cornflakes: 0,
-    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, lemonTart: 0, fruitTray: 0,
+    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, crystalTiramisu: 0, lemonTart: 0, fruitTray: 0,
     method: 'pickup', orderDate: null
   };
 
@@ -662,6 +676,7 @@ section.block{margin-bottom:22px;}
   var qtyCrystalMangoEl = document.getElementById('qtyCrystalMango');
   var qtyCrystalBuonoEl = document.getElementById('qtyCrystalBuono');
   var qtyCrystalLotusEl = document.getElementById('qtyCrystalLotus');
+  var qtyCrystalTiramisuEl = document.getElementById('qtyCrystalTiramisu');
   var qtyLemonTartEl = document.getElementById('qtyLemonTart');
   var qtyFruitTrayEl = document.getElementById('qtyFruitTray');
   var totalDisplay = document.getElementById('totalDisplay');
@@ -690,7 +705,7 @@ section.block{margin-bottom:22px;}
   function calcTotal(){
     var t = state.sinabon * PRICE_SINABON + state.babka * PRICE_BABKA + state.crumble * PRICE_CRUMBLE + state.cornflakes * PRICE_CORNFLAKES +
       state.crumbleLotus * PRICE_CRUMBLE_LOTUS +
-      (state.crystalMango + state.crystalBuono + state.crystalLotus) * PRICE_CRYSTAL +
+      (state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu) * PRICE_CRYSTAL +
       state.lemonTart * PRICE_LEMON_TART +
       state.fruitTray * PRICE_FRUIT_TRAY;
     if(state.method === 'delivery') t += DELIVERY_FEE;
@@ -706,6 +721,7 @@ section.block{margin-bottom:22px;}
     qtyCrystalMangoEl.textContent = state.crystalMango;
     qtyCrystalBuonoEl.textContent = state.crystalBuono;
     qtyCrystalLotusEl.textContent = state.crystalLotus;
+    qtyCrystalTiramisuEl.textContent = state.crystalTiramisu;
     qtyLemonTartEl.textContent = state.lemonTart;
     qtyFruitTrayEl.textContent = state.fruitTray;
     totalDisplay.textContent = calcTotal() + ' ש"ח';
@@ -743,7 +759,7 @@ section.block{margin-bottom:22px;}
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
     var totalItems = state.sinabon + state.babka + state.crumble + state.cornflakes +
-      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.lemonTart + state.fruitTray;
+      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu + state.lemonTart + state.fruitTray;
     if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
@@ -788,6 +804,7 @@ section.block{margin-bottom:22px;}
       qtyCrystalMango: String(state.crystalMango),
       qtyCrystalBuono: String(state.crystalBuono),
       qtyCrystalLotus: String(state.crystalLotus),
+      qtyCrystalTiramisu: String(state.crystalTiramisu),
       qtyLemonTart: String(state.lemonTart),
       qtyFruitTray: String(state.fruitTray),
       note: note,
@@ -813,6 +830,7 @@ section.block{margin-bottom:22px;}
     if(state.crystalMango) lines.push(state.crystalMango + ' × קריסטלית מנגו');
     if(state.crystalBuono) lines.push(state.crystalBuono + ' × קריסטלית בואנו');
     if(state.crystalLotus) lines.push(state.crystalLotus + ' × קריסטלית קראנץ\' לוטוס');
+    if(state.crystalTiramisu) lines.push(state.crystalTiramisu + ' × טירמיסו');
     if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
     if(state.fruitTray) lines.push(state.fruitTray + ' × מגש פירות');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית'
