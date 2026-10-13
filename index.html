@@ -567,12 +567,13 @@ section.block{margin-bottom:22px;}
         <label class="method active" id="methodPickupLabel">
           <input type="radio" name="method" value="pickup" id="methodPickup" checked>
           <div>
-            <div class="mtitle">איסוף עצמי מהקונדיטוריה</div>
-            <div class="mdesc">סמטת הבוקרים 5, מזור · בין 9:30 ל-12:00</div>
+            <div class="mtitle">איסוף מהדוכן ליד צרכניית מזור</div>
+            <div class="mdesc">בין 8:00 ל-12:00</div>
           </div>
         </label>
-        <label class="method" id="methodDeliveryLabel">
-          <input type="radio" name="method" value="delivery" id="methodDelivery">
+        <!-- משלוח הוסר ב-2026-10-13 לפי בקשת שיר ("כרגע"). להחזרה: למחוק את ה-display:none ואת ה-disabled, ואת ההערה הזו -->
+        <label class="method" id="methodDeliveryLabel" style="display:none">
+          <input type="radio" name="method" value="delivery" id="methodDelivery" disabled>
           <div>
             <div class="mtitle">משלוח עד הבית</div>
             <div class="mdesc mprice">תוספת 20 ש"ח למשלוח</div>
@@ -788,7 +789,7 @@ section.block{margin-bottom:22px;}
     var note = document.getElementById('note').value.trim();
     var methodText = state.method === 'delivery'
       ? 'משלוח עד הבית (+20 ש"ח)'
-      : 'איסוף עצמי - סמטת הבוקרים 5, מזור, 9:30-12:00';
+      : 'איסוף מהדוכן ליד צרכניית מזור, 8:00-12:00';
     var total = calcTotal();
 
     var body = new URLSearchParams({
@@ -835,7 +836,7 @@ section.block{margin-bottom:22px;}
     if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
     if(state.fruitTray) lines.push(state.fruitTray + ' × מגש פירות');
     var methodLine = state.method === 'delivery' ? 'משלוח עד הבית'
-      : 'איסוף עצמי מהקונדיטוריה (מזור)';
+      : 'איסוף מהדוכן ליד צרכניית מזור (8:00-12:00)';
     document.getElementById('orderSummaryCard').innerHTML =
       '<div><b>' + getOrderDateLabel() + '</b></div>' +
       '<div style="margin-top:8px">' + lines.join('<br>') + '</div>' +
