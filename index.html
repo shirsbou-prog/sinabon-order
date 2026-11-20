@@ -60,7 +60,7 @@
 
 *{box-sizing:border-box;}
 body{
-  background:linear-gradient(var(--bg-tint),var(--bg-tint)), var(--bg) url('bg.png') top center / 100% auto no-repeat;
+  background:var(--bg);
   color:var(--ink);
   direction:rtl;
   font-family:'Heebo',Arial,sans-serif;
@@ -361,6 +361,8 @@ section.block{margin-bottom:22px;}
   .deals-t{font-weight:800;font-size:17px}
   .deals-s{font-weight:400;font-size:12.5px;color:#7a4a57;margin-top:2px}
   .deal-note{font-size:12.5px;color:#2e7d3a;font-weight:700;margin-top:2px}
+  body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(var(--bg-tint),var(--bg-tint)), url('bg.png') center / cover no-repeat}
 </style>
 
 </head>
@@ -368,7 +370,7 @@ section.block{margin-bottom:22px;}
 <div class="wrap" id="app">
 
   <div class="brand">
-    <img src="logo.png" alt="Shir's Boutique - קונדיטוריה סיטונאית" class="logo">
+    <img src="logo.png" alt="Shir's Boutique - קונדיטוריה בוטיק" class="logo">
     <img src="kosher_badge.png" alt="כשר למהדרין - הרבנות הראשית חבל מודיעין" class="kosher-badge">
   </div>
 
@@ -586,16 +588,30 @@ section.block{margin-bottom:22px;}
       </div>
 
       <div class="product">
-        <img class="pimg" src="prod_crystal_lotus.png" alt="קריסטלית מוס שמנת קראנץ לוטוס">
+        <img class="pimg" src="prod_crystal_lotus.png" alt="קריסטלית מוס שמנת לוטוס">
         <div class="product-info">
-          <p class="pname">קריסטלית מוס שמנת - קראנץ' לוטוס</p>
-          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג קראנץ' לוטוס.</p>
+          <p class="pname">קריסטלית מוס שמנת - לוטוס</p>
+          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג לוטוס.</p>
           <p class="pprice">39 ש"ח ליחידה · 2 ב-69 ש"ח</p>
         </div>
         <div class="stepper">
           <button type="button" data-action="dec" data-product="crystalLotus" aria-label="הפחתת כמות קריסטלית קראנץ לוטוס">−</button>
           <span class="qty" id="qtyCrystalLotus">0</span>
-          <button type="button" data-action="inc" data-product="crystalLotus" aria-label="הוספת כמות קריסטלית קראנץ לוטוס">+</button>
+          <button type="button" data-action="inc" data-product="crystalLotus" aria-label="הוספת כמות קריסטלית לוטוס">+</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="pimg" style="background:#FFD6E0"></div>
+        <div class="product-info">
+          <p class="pname">קריסטלית מוס שמנת - קראנץ' שוקולד חלב</p>
+          <p class="pdesc">פירורי עוגת וניל וחמאה, מוס שמנת וניל, טופינג קראנץ' שוקולד חלב.</p>
+          <p class="pprice">39 ש"ח ליחידה · 2 ב-69 ש"ח</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="crystalMilkChoc" aria-label="הפחתת כמות קריסטלית קראנץ שוקולד חלב">−</button>
+          <span class="qty" id="qtyCrystalMilkChoc">0</span>
+          <button type="button" data-action="inc" data-product="crystalMilkChoc" aria-label="הוספת כמות קריסטלית קראנץ שוקולד חלב">+</button>
         </div>
       </div>
 
@@ -773,7 +789,7 @@ section.block{margin-bottom:22px;}
 
   var state = {
     sinabon: 0, sinabonFamily: 0, babka: 0, babkaAlmond: 0, crumble: 0, crumbleBueno: 0, crumbleNutella: 0, crumbleOreo: 0, bhMaple: 0, bhMarble: 0, bhChoc: 0, cornflakes: 0,
-    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, crystalTiramisu: 0, lemonTart: 0, fruitTray: 0,
+    crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, crystalMilkChoc: 0, crystalTiramisu: 0, lemonTart: 0, fruitTray: 0,
     method: 'pickup', orderDate: null
   };
 
@@ -851,7 +867,7 @@ section.block{margin-bottom:22px;}
     var bach = state.bhMaple + state.bhMarble + state.bhChoc;
     var boxes = Math.min(Math.floor(state.sinabon / 2), Math.floor(crumbles / 2));
     var yeast = state.babka + state.babkaAlmond;
-    var crystals = state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu;
+    var crystals = state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalMilkChoc + state.crystalTiramisu;
     var t = (state.sinabon - boxes * 2) * PRICE_SINABON + (crumbles - boxes * 2) * PRICE_CRUMBLE + boxes * 99 +
       Math.floor(yeast / 2) * 99 + (yeast % 2) * PRICE_BABKA +
       Math.floor(crystals / 2) * 69 + (crystals % 2) * PRICE_CRYSTAL +
@@ -873,7 +889,7 @@ section.block{margin-bottom:22px;}
     qtySinabonEl.textContent = state.sinabon;
     qtyBabkaEl.textContent = state.babka;
     qtyBabkaAlmondEl.textContent = state.babkaAlmond;
-    ['sinabonFamily', 'crumbleBueno', 'crumbleNutella', 'crumbleOreo', 'bhMaple', 'bhMarble', 'bhChoc'].forEach(function(k){ document.getElementById('qty' + k.charAt(0).toUpperCase() + k.slice(1)).textContent = state[k]; });
+    ['crystalMilkChoc', 'sinabonFamily', 'crumbleBueno', 'crumbleNutella', 'crumbleOreo', 'bhMaple', 'bhMarble', 'bhChoc'].forEach(function(k){ document.getElementById('qty' + k.charAt(0).toUpperCase() + k.slice(1)).textContent = state[k]; });
     qtyCrumbleEl.textContent = state.crumble;
     qtyCornflakesEl.textContent = state.cornflakes;
     qtyCrumbleLotusEl.textContent = state.crumbleLotus;
@@ -924,7 +940,7 @@ section.block{margin-bottom:22px;}
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
     var totalItems = state.sinabonFamily + state.crumbleBueno + state.crumbleNutella + state.crumbleOreo + state.bhMaple + state.bhMarble + state.bhChoc +
       state.sinabon + state.babka + state.babkaAlmond + state.crumble + state.cornflakes +
-      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu + state.lemonTart + state.fruitTray;
+      state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalMilkChoc + state.crystalTiramisu + state.lemonTart + state.fruitTray;
     if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
     if(state.fruitTray && state.method !== 'pickup') return { msg: 'מגש הפירות נאסף מהקונדיטוריה בלבד. נא לבחור איסוף מהקונדיטוריה' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
@@ -976,6 +992,7 @@ section.block{margin-bottom:22px;}
       qtyCrystalMango: String(state.crystalMango),
       qtyCrystalBuono: String(state.crystalBuono),
       qtyCrystalLotus: String(state.crystalLotus),
+      qtyCrystalMilkChoc: String(state.crystalMilkChoc),
       qtyCrystalTiramisu: String(state.crystalTiramisu),
       qtyLemonTart: String(state.lemonTart),
       qtyFruitTray: String(state.fruitTray),
@@ -1009,7 +1026,8 @@ section.block{margin-bottom:22px;}
     if(state.bhChoc) lines.push(state.bhChoc + ' × בחושת שוקולד גנאש וסוכריות');
     if(state.crystalMango) lines.push(state.crystalMango + ' × קריסטלית מנגו');
     if(state.crystalBuono) lines.push(state.crystalBuono + ' × קריסטלית בואנו');
-    if(state.crystalLotus) lines.push(state.crystalLotus + ' × קריסטלית קראנץ\' לוטוס');
+    if(state.crystalLotus) lines.push(state.crystalLotus + ' × קריסטלית לוטוס');
+    if(state.crystalMilkChoc) lines.push(state.crystalMilkChoc + ' × קריסטלית קראנץ\' שוקולד חלב');
     if(state.crystalTiramisu) lines.push(state.crystalTiramisu + ' × טירמיסו');
     if(state.lemonTart) lines.push(state.lemonTart + ' × טארט לימון');
     if(state.fruitTray) lines.push(state.fruitTray + ' × מגש פירות');
