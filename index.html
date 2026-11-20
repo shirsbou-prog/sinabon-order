@@ -671,8 +671,8 @@ section.block{margin-bottom:22px;}
         <img class="pimg" src="prod_fruit_tray.png" alt="מגש פירות">
         <div class="product-info">
           <p class="pname">מגש פירות</p>
-          <p class="pdesc">מגש פירות טריים חתוכים ומסודרים בקפידה, סוג הפירות משתנה לפי העונה. גודל מגש 25*35.</p>
-          <p class="pprice">229 ש"ח</p>
+          <p class="pdesc">מגש פירות טריים חתוכים ומסודרים בקפידה, סוג הפירות משתנה לפי העונה. גודל מגש 25*35.<br><b style="color:#a0465a">ניתן לאסוף מהקונדיטוריה בלבד.</b></p>
+          <p class="pprice">199 ש"ח <s style="color:#9a8a8a;font-weight:400;margin-right:6px">229 ש"ח</s></p>
         </div>
         <div class="stepper">
           <button type="button" data-action="dec" data-product="fruitTray" aria-label="הפחתת כמות מגש פירות">−</button>
@@ -769,7 +769,7 @@ section.block{margin-bottom:22px;}
 (function(){
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzd3oU3RBYeDIyzjAxTQBFQSgEGi9mq51pSVzOVYLV2cY2vzbplWxnUO0TtkCkg5fDg/exec";
   var PRICE_SINABON = 25, PRICE_BABKA = 55, PRICE_CRUMBLE = 34, PRICE_CORNFLAKES = 34,
-      PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, PRICE_FRUIT_TRAY = 229, DELIVERY_FEE = 20;
+      PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, PRICE_FRUIT_TRAY = 199, DELIVERY_FEE = 20;
 
   var state = {
     sinabon: 0, sinabonFamily: 0, babka: 0, babkaAlmond: 0, crumble: 0, crumbleBueno: 0, crumbleNutella: 0, crumbleOreo: 0, bhMaple: 0, bhMarble: 0, bhChoc: 0, cornflakes: 0,
@@ -926,6 +926,7 @@ section.block{margin-bottom:22px;}
       state.sinabon + state.babka + state.babkaAlmond + state.crumble + state.cornflakes +
       state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu + state.lemonTart + state.fruitTray;
     if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
+    if(state.fruitTray && state.method !== 'pickup') return { msg: 'מגש הפירות נאסף מהקונדיטוריה בלבד. נא לבחור איסוף מהקונדיטוריה' };
     if(!fullName) return { msg: 'נא למלא שם מלא' };
     if(!phone) return { msg: 'נא למלא מספר טלפון' };
     if(state.method === 'delivery' && !addressInput.value.trim()) return { msg: 'כתובת למשלוח היא שדה חובה', field: addressInput };
