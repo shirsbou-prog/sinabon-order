@@ -421,7 +421,7 @@ section.block{margin-bottom:22px;}
         <img class="pimg" src="prod_sinabon_single.jpg" alt="סינבון עננים">
         <div class="product-info">
           <p class="pname">סינבון עננים</p>
-          <p class="pdesc">רול סינבון אישי, רך ועסיסי, עם ציפוי גלייז.</p>
+          <p class="pdesc">רול סינבון אישי, רך ועסיסי, עם ציפוי גלייז. מומלץ לחמם לפני האכילה.</p>
           <p class="pprice">25 ש"ח ליחידה</p>
         </div>
         <div class="stepper">
@@ -432,10 +432,24 @@ section.block{margin-bottom:22px;}
       </div>
 
       <div class="product">
+        <img class="pimg" src="prod_sinabon.png" alt="סינבון משפחתי">
+        <div class="product-info">
+          <p class="pname">סינבון משפחתי</p>
+          <p class="pdesc">תבנית של 4 רולים, הקרם מגיע בנפרד. מומלץ לחמם לפני האכילה.</p>
+          <p class="pprice">55 ש"ח לתבנית</p>
+        </div>
+        <div class="stepper">
+          <button type="button" data-action="dec" data-product="sinabonFamily" aria-label="הפחתת כמות סינבון משפחתי">−</button>
+          <span class="qty" id="qtySinabonFamily">0</span>
+          <button type="button" data-action="inc" data-product="sinabonFamily" aria-label="הוספת כמות סינבון משפחתי">+</button>
+        </div>
+      </div>
+
+      <div class="product">
         <img class="pimg" src="prod_babka.png" alt="עוגת שמרים שוקולד">
         <div class="product-info">
           <p class="pname">עוגת שמרים שוקולד (נוטלה מהדרין)</p>
-          <p class="pdesc">עוגת שמרים עסיסית במילוי נוטלה.</p>
+          <p class="pdesc">עוגת שמרים עסיסית במילוי נוטלה. מומלץ לחמם לפני האכילה.</p>
           <p class="pprice">55 ש"ח לעוגה · 2 ב-99 ש"ח</p>
         </div>
         <div class="stepper">
@@ -449,7 +463,7 @@ section.block{margin-bottom:22px;}
         <div class="pimg" style="background:#FFD6E0"></div>
         <div class="product-info">
           <p class="pname">עוגת שמרים שקדים</p>
-          <p class="pdesc">עוגת שמרים עסיסית במילוי שקדים.</p>
+          <p class="pdesc">עוגת שמרים עסיסית במילוי שקדים. מומלץ לחמם לפני האכילה.</p>
           <p class="pprice">55 ש"ח לעוגה · 2 ב-99 ש"ח</p>
         </div>
         <div class="stepper">
@@ -758,7 +772,7 @@ section.block{margin-bottom:22px;}
       PRICE_CRUMBLE_LOTUS = 34, PRICE_CRYSTAL = 39, PRICE_LEMON_TART = 38, PRICE_FRUIT_TRAY = 229, DELIVERY_FEE = 20;
 
   var state = {
-    sinabon: 0, babka: 0, babkaAlmond: 0, crumble: 0, crumbleBueno: 0, crumbleNutella: 0, crumbleOreo: 0, bhMaple: 0, bhMarble: 0, bhChoc: 0, cornflakes: 0,
+    sinabon: 0, sinabonFamily: 0, babka: 0, babkaAlmond: 0, crumble: 0, crumbleBueno: 0, crumbleNutella: 0, crumbleOreo: 0, bhMaple: 0, bhMarble: 0, bhChoc: 0, cornflakes: 0,
     crumbleLotus: 0, crystalMango: 0, crystalBuono: 0, crystalLotus: 0, crystalTiramisu: 0, lemonTart: 0, fruitTray: 0,
     method: 'pickup', orderDate: null
   };
@@ -842,14 +856,14 @@ section.block{margin-bottom:22px;}
       Math.floor(yeast / 2) * 99 + (yeast % 2) * PRICE_BABKA +
       Math.floor(crystals / 2) * 69 + (crystals % 2) * PRICE_CRYSTAL +
       Math.floor(bach / 2) * 79 + (bach % 2) * 45 +
-      state.lemonTart * PRICE_LEMON_TART + state.fruitTray * PRICE_FRUIT_TRAY;
+      state.lemonTart * PRICE_LEMON_TART + state.fruitTray * PRICE_FRUIT_TRAY + state.sinabonFamily * 55;
     var deals = [];
     if(boxes) deals.push((boxes > 1 ? boxes + ' × ' : '') + 'מארז שישי (2 סינבון + 2 קראמבל) ב-99');
     if(yeast >= 2) deals.push((Math.floor(yeast / 2) > 1 ? Math.floor(yeast / 2) + ' × ' : '') + '2 עוגות שמרים ב-99');
     if(bach >= 2) deals.push((Math.floor(bach / 2) > 1 ? Math.floor(bach / 2) + ' × ' : '') + '2 בחושות ב-79');
     if(crystals >= 2) deals.push((Math.floor(crystals / 2) > 1 ? Math.floor(crystals / 2) + ' × ' : '') + '2 קריסטליות ב-69');
     var full = state.sinabon * PRICE_SINABON + crumbles * PRICE_CRUMBLE + yeast * PRICE_BABKA + crystals * PRICE_CRYSTAL + bach * 45 +
-      state.lemonTart * PRICE_LEMON_TART + state.fruitTray * PRICE_FRUIT_TRAY;
+      state.lemonTart * PRICE_LEMON_TART + state.fruitTray * PRICE_FRUIT_TRAY + state.sinabonFamily * 55;
     return { total: t, deals: deals, saved: full - t };
   }
 
@@ -859,7 +873,7 @@ section.block{margin-bottom:22px;}
     qtySinabonEl.textContent = state.sinabon;
     qtyBabkaEl.textContent = state.babka;
     qtyBabkaAlmondEl.textContent = state.babkaAlmond;
-    ['crumbleBueno', 'crumbleNutella', 'crumbleOreo', 'bhMaple', 'bhMarble', 'bhChoc'].forEach(function(k){ document.getElementById('qty' + k.charAt(0).toUpperCase() + k.slice(1)).textContent = state[k]; });
+    ['sinabonFamily', 'crumbleBueno', 'crumbleNutella', 'crumbleOreo', 'bhMaple', 'bhMarble', 'bhChoc'].forEach(function(k){ document.getElementById('qty' + k.charAt(0).toUpperCase() + k.slice(1)).textContent = state[k]; });
     qtyCrumbleEl.textContent = state.crumble;
     qtyCornflakesEl.textContent = state.cornflakes;
     qtyCrumbleLotusEl.textContent = state.crumbleLotus;
@@ -908,7 +922,7 @@ section.block{margin-bottom:22px;}
     var phone = document.getElementById('phone').value.trim();
     if(!state.orderDate) return { msg: 'נא לבחור לאיזה תאריך ההזמנה' };
     if(state.orderDate === 'other' && !otherDateInput.value.trim()) return { msg: 'נא לציין לאיזה יום שישי ההזמנה', field: otherDateInput };
-    var totalItems = state.crumbleBueno + state.crumbleNutella + state.crumbleOreo + state.bhMaple + state.bhMarble + state.bhChoc +
+    var totalItems = state.sinabonFamily + state.crumbleBueno + state.crumbleNutella + state.crumbleOreo + state.bhMaple + state.bhMarble + state.bhChoc +
       state.sinabon + state.babka + state.babkaAlmond + state.crumble + state.cornflakes +
       state.crumbleLotus + state.crystalMango + state.crystalBuono + state.crystalLotus + state.crystalTiramisu + state.lemonTart + state.fruitTray;
     if(totalItems === 0) return { msg: 'צריך לבחור לפחות מוצר אחד' };
@@ -945,7 +959,8 @@ section.block{margin-bottom:22px;}
       phone: phone,
       method: methodText,
       address: state.method === 'delivery' ? addressInput.value.trim() : '',
-      qtySinabon: String(state.sinabon),
+      qtySinabon: String(state.sinabonFamily),
+      qtySinabonSingle: String(state.sinabon),
       qtyBabka: String(state.babka),
       qtyBabkaAlmond: String(state.babkaAlmond),
       qtyCrumble: String(state.crumble),
@@ -978,7 +993,8 @@ section.block{margin-bottom:22px;}
     var phone = document.getElementById('phone').value.trim();
     var note = document.getElementById('note').value.trim();
     var lines = [];
-    if(state.sinabon) lines.push(state.sinabon + ' × סינבון עננים');
+    if(state.sinabon) lines.push(state.sinabon + ' × סינבון עננים (יחיד)');
+    if(state.sinabonFamily) lines.push(state.sinabonFamily + ' × סינבון משפחתי (4 רולים)');
     if(state.babka) lines.push(state.babka + ' × עוגת שמרים שוקולד (נוטלה מהדרין)');
     if(state.babkaAlmond) lines.push(state.babkaAlmond + ' × עוגת שמרים שקדים');
     if(state.crumbleBueno) lines.push(state.crumbleBueno + ' × קראמבל בואנו');
